@@ -5,7 +5,7 @@
 ## Table of contents
 
 1.  Genome_assembly methods( [contig](1.Genome_assembly/1.contig/Readme.md) and [hybrid scaffold](1.Genome_assembly/2.scaffold/Readme.md))
-2.  [Genome_annotation](2.Genome_annotation/READme.md)
+2.  [Genome_annotation](2.Genome_annotation/Readme.md)
 3.  [Pan-genome_analysis]( 3.Pan-genome_analysis/READme.md)
 4.  Graph_pangenome([graph_construction](4.Graph_pangenome/1.construction_graph_genome/READme.md) and [graph_annotation](4.Graph_pangenome/2.graphAnnotation/READme.md) )
 5.  [Missing_heritability_analysis](4.Missing_heritability_analysis/README.md)
