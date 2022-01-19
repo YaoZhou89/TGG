@@ -1,11 +1,5 @@
 # Heritability analysis
 
-### Phenotye simulation
-
-```shell
-sh simPhe.sh
-```
-
 ## Phenotype data preparion
 
 ### Gene expression and metabolite contents
@@ -17,7 +11,7 @@ kallisto index ./all.gene.cdna.fa.gz -i all.gene.cdna.fa.index
 kallisto quant -i ./all.gene.cdna.fa.gz -o ./Result -t 4 -b 100 PATH/Sample_R1.fq.gz PATH/Sample_R2.fq.gz 
 ```
 
-Normalization of expression
+Normalization of all expression results
 
 ```shell
 Rscript script/prepare_gene_expression.R
@@ -38,16 +32,15 @@ weights = PEER_getW(model)
 precision = PEER_getAlpha(model)
 residuals = PEER_getResiduals(model)
 PEER_setAdd_mean(model, TRUE)
-write.table(residuals,"./peer_residuals.tsv",quote=F,row.names=F,sep="\t")
 write.table(residuals,"./peer_residuals.tsv",quote=F,row.names=F,sep="\t",col.names=F)
 write.table(factors,"./peer_covariates.tsv",quote=F,row.names=F,sep="\t",col.names=F)
 ```
 
 
 
-## Variants data preparion
+## Prepare genetic variants 
 
-Variants of cis regions
+Extract variants within cis regions
 
 ```shell
 less expre_sl5_graph.bed | awk '{print $1"\t"$2-50000"\t"$3+50000"\t"$4}' | sort -k2,2n >tmp
@@ -57,7 +50,7 @@ bedtools intersect -a ../332_sv_bed   -b ../sl5_graph_gene_bed -wo  >tmp
 for i in `less ../gene_id`; do echo " grep \"$i\"  tmp | awk '{print \$4}'|sort | uniq  > $i";done  >para.sh
 echo  "~/software/ParaFly -c para.sh  -CPU 60" >1.sh
 ```
-Leading local variants
+Extract all local variants around a leading significant variants
 
 ```shell
 bedtools intersect -a ../../combined_leading.bed   -b ../332_bed   -wo >tmp
@@ -68,7 +61,7 @@ echo "~/software/ParaFly -c para.sh  -CPU 64 ">1.sh
 sbatch -p amd_io 1.sh
 ```
 
-Module variants
+Extract variants from a given module genes
 
 ```shell
 for i in `less ./gene_id`; do echo "cat $i all_varaint |sort |uniq -u  >${i}_peripheral";done  >peripheral.sh
@@ -85,34 +78,24 @@ There is a small demo for heritability estimation.
 
 
 ```shell
-plink  --vcf test.vcf.gz --recode --out output --double-id
-plink  --file output --make-bed --out  output
-plink --keep meta_ID.plink  --bfile plink  --make-bed --maf 0.005 --out meta
-plink --bfile meta --recode vcf-iid --out meta
-bgzip meta.vcf
-```
+## prepare genotype in plink format
+plink  --vcf test.vcf.gz --recode --out test --double-id
+plink  --file test --make-bed --out test
+plink --keep ID.kept.txt --bfile test --make-bed --maf 0.005 --out kept.test
+plink --bfile kept.test --recode vcf --out kept.test
+bgzip kept.test.vcf
 
-`LDAK Weightings` which are designed to account for the fact that levels of linkage disequilibrium vary across the genome. To calculate the LDAK weightings requires two steps: Step 1 cuts the predictors into sections, while Step 2 calculates weightings for each section (and joins them up).
+# prune the genotype dataset
+ldak --bfile kept.test --cut-weights snps --window-prune 0.98
 
-```shell
-#step 1:
-~/software/ldak.out --bfile meta   --cut-weights  snps --window-prune 0.98
-#step 2:
-~/software/ldak.out --bfile meta  --calc-weights-all snps 1> weights.out &
-```
+# weighting
+ldak --bfile kept.test  --calc-weights-all snps 1 > weights.out 
 
-To calculate `kinships`, we used the direct method with one step.
+# calculate kinship
+ldak  --calc-kins-direct LDAK-Thin --bfile  kept.test  --weights snps/weights.thin --power -.5 
 
-```shell
-~/software/ldak.out  --thin thin --bfile   meta  --window-prune .98 --window-kb 100
-awk < thin.in '{print $1, 1}' > weights.thin
-~/software/ldak.out  --calc-kins-direct LDAK-Thin --bfile  meta  --weights weights.thin --power -.25 1>LDAK-Thin.log 2>LDAK-Thin.err &
-```
-
-We used a generalized `REML` (restricted maximum likelihood) solver for estimating the heritabilities contributed by kinship matrices and/or regions. note: 1703 is expression SL5 gene.
-
-```shell
-~/software/ldak.out --pheno /public10/home/sci0011/projects/tomato2/12_pheno/03_exp_meta/pheno_exp_meta.txt --mpheno 1709  --grm LDAK-Thin  --covar /public10/home/sci0011/projects/tomato2/17_cov/01_snps/pheno.cov --reml 1709 --constrain YES
+# estimate heritability
+ldak --pheno pheno.txt --mpheno 4  --grm LDAK-Thin  --covar pheno.cov --reml 4 --constrain YES
 ```
 
 
@@ -146,7 +129,7 @@ Lassopv software is applied to association study (https://github.com/lingfeiwang
 ## Prepare genotype
 
 ```shell
-java -Xmx4g -jar ~/soft/beagle.18May20.d20.jar gt=10000.vcf out=10000.inputed
+java -Xmx4g -jar script/beagle.18May20.d20.jar gt=10000.vcf out=10000.inputed
 plink --indep-pairwise 100 1 0.7 --vcf 10000.inputed.vcf.gz --out 10000.filtered
 plink --vcf 10000.inputed.vcf.gz --extract 10000.filtered.prune.in --make-bed --out 10000.filtered
 plink --bfile 10000.filtered --recode vcf --out 10000.filtered
