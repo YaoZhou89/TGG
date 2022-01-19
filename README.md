@@ -18,7 +18,7 @@
 
 ## Links for external data
 
-[Our web-based database](https://solomics.agis.caas.cn/tomato)
+[Our web-based database](http://solomics.agis.org.cn/tomato/)
 
 
 
