@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in line 10 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial1/Snakefile:
+Wildcards in input files cannot be determined from output files:
+'ref'

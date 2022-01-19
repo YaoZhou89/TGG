@@ -1,0 +1,77 @@
+# Tomato Grapic Reference Genome Figure1
+
+## 1a SL4.0 vs SL5.0
+```{r}
+TEpal <- c("#5fc0a7","#abc457","#403dcc","#4771f5",
+           "#4da3dc","#f5c456","#ef8b3b","#ec5a29","grey")
+
+SVpal <- c("#5fc0a7","#4771f5","#f5c456","#ec5a29","grey80")
+
+
+mypal <- c(TEpal[6],TEpal[5],TEpal[1])
+```
+
+```{r}
+library(ggplot2)
+library(ggsci)
+
+SVpal <- c("#5fc0a7","#4771f5","#E871B3","#ec5a29","grey80")
+data <- read.table("./b/SL4_gap_region.txt",header = T)
+head(data)
+data$Start <- data$Start/1e6
+data$End <- data$End/1e6
+chr_order <- c(paste("Chr0",c(1:9),sep=""),paste("Chr",c(10:12),sep=""))
+data$Chr <- factor(data$Chr,levels=chr_order)
+data_contig<- data[data$Type=="W",]
+data_gap <- data[data$Type=="N",]
+
+data_sl5 <- read.table("./b/SL5_gap_region.txt",header = T)
+head(data_sl5)
+data_sl5$Start <- data_sl5$Start/1e6
+data_sl5$End <- data_sl5$End/1e6
+data_sl5$Chr <- factor(data_sl5$Chr,levels=chr_order)
+data_contig_sl5<- data_sl5[data_sl5$Type=="W",]
+
+syri_result <- read.table("./b/SL4_SL5_1kb_sv.tsv",header=T,sep="\t")
+syri_result$Chr <- factor(syri_result$Chr,levels=chr_order)
+syri_result$Pos <- syri_result$Pos/1e6
+syri_result$Type <- factor(syri_result$Type,levels=c("INS","DEL","DUP","INV","SYN"))
+
+syri_result <- syri_result[syri_result$Type!="SYN",]
+
+
+
+p1a <- ggplot()+
+  geom_rect(data=data_contig,aes(xmin = Start,xmax=End,ymin=2.2,ymax=3),fill="#4da3dc")+
+  geom_rect(data=data_contig_sl5,aes(xmin = Start,xmax=End,ymin=0,ymax=0.8),fill="#f5c456")+
+  geom_polygon(data=syri_result,aes(x=Pos,y=Value,fill=Type,group=id),size=1,alpha=0.8)+
+  #geom_rect(data=data_gap,aes(xmin = Start,xmax=End,ymin=1,ymax=2),fill="red")+
+  facet_wrap(~Chr,nrow = 12,strip.position = "left")+
+  #scale_fill_manual(values=c("white","blue"))+
+  theme_bw()+
+  theme(
+    axis.text.y=element_blank(),
+    axis.ticks.y=element_blank(),
+    panel.background = element_blank(),
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    strip.background = element_blank(),
+    strip.text.y.left = element_text(size=6,color="black",angle=0),
+    axis.text.x = element_text(color="black",size=6),
+    axis.line.x = element_line(size=0.3,color="black"),
+    axis.title = element_text(size=8,color="black"),
+    legend.position = c(0.8,0.5),
+    legend.title=element_blank(),
+    legend.key.size = unit(6,"pt"),
+    legend.text = element_text(size=6,color="black"),
+    axis.ticks = element_line(size =0.3),
+    axis.line = element_line(size=0.3)
+  )+
+  scale_fill_manual(values=SVpal)+
+  scale_x_continuous(expand=c(0,0),breaks=scales::pretty_breaks(n=10),limits=c(0,95))+
+  scale_y_continuous(limits=c(-0.4,3.4))+
+  labs(x="Chromosome (Mb)",y="")
+
+ggsave("./b-sv.pdf",p1a,width=8,height=6,units="cm")
+
+```

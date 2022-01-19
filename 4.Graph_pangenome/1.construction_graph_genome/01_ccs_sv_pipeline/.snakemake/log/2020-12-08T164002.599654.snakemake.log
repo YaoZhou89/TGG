@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 44 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/Snakefile:
+Missing input files for rule cuteSV:
+01_raw_data/ref/ref_po_cp.fa02_bam/sampleA.ngmlr.sort.bam.bai

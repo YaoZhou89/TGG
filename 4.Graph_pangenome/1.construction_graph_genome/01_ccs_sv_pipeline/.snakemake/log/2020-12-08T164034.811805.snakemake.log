@@ -1,0 +1,2 @@
+SyntaxError in line 48 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/Snakefile:
+positional argument follows keyword argument

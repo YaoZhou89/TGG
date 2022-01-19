@@ -1,0 +1,3 @@
+AttributeError in line 94 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/Snakefile:
+'Rules' object has no attribute 'cuteSV_call'
+  File "/vol1/agis/huangsanwen_group/chenglin/sv_tutorial/Snakefile", line 94, in <module>

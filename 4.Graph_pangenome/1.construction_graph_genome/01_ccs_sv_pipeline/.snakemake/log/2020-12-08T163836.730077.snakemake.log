@@ -1,0 +1,43 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	2	cuteSV
+	2
+
+[Tue Dec  8 16:38:37 2020]
+rule cuteSV:
+    input: 02_bam/sampleA.ngmlr.sort.bam, 01_raw_data/ref/ref_po_cp.fa
+    output: 03_vcf/02_cuteSV/sampleA.cuteSV.vcf
+    jobid: 0
+    wildcards: sample=sampleA
+
+
+[Tue Dec  8 16:38:37 2020]
+rule cuteSV:
+    input: 02_bam/sampleB.ngmlr.sort.bam, 01_raw_data/ref/ref_po_cp.fa
+    output: 03_vcf/02_cuteSV/sampleB.cuteSV.vcf
+    jobid: 1
+    wildcards: sample=sampleB
+
+[Tue Dec  8 16:38:39 2020]
+Error in rule cuteSV:
+    jobid: 1
+    output: 03_vcf/02_cuteSV/sampleB.cuteSV.vcf
+    shell:
+        cuteSV 02_bam/sampleB.ngmlr.sort.bam 01_raw_data/ref/ref_po_cp.fa 03_vcf/02_cuteSV/sampleB.cuteSV.vcf ./ --max_cluster_bias_INS 1000 --diff_ratio_merging_INS 0.9 --max_cluster_bias_DEL 1000 --diff_ratio_merging_DEL 0.5
+        (exited with non-zero exit code)
+
+[Tue Dec  8 16:38:40 2020]
+Error in rule cuteSV:
+    jobid: 0
+    output: 03_vcf/02_cuteSV/sampleA.cuteSV.vcf
+    shell:
+        cuteSV 02_bam/sampleA.ngmlr.sort.bam 01_raw_data/ref/ref_po_cp.fa 03_vcf/02_cuteSV/sampleA.cuteSV.vcf ./ --max_cluster_bias_INS 1000 --diff_ratio_merging_INS 0.9 --max_cluster_bias_DEL 1000 --diff_ratio_merging_DEL 0.5
+        (exited with non-zero exit code)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/.snakemake/log/2020-12-08T163836.730077.snakemake.log

@@ -1,0 +1,8 @@
+source /public/software/modules-4.5.1/init/bash && export MODULEPATH=/public/home/baozhigui/software/modulefiles:$MODULEPATH
+
+module load KAT/2.4.2
+
+out=C88
+threads=96
+options="-H 10000000000 -I 10000000000 -m 31 -h"
+kat comp -o $out -t $threads $options <(gunzip -c 28G.fq.gz) c88.asm.p_ctg.fa

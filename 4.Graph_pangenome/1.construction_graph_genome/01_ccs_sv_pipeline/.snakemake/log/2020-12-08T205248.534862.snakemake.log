@@ -1,0 +1,18 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	svim_call
+	1
+
+[Tue Dec  8 20:52:48 2020]
+rule svim_call:
+    input: 02_bam/sampleA.ngmlr.sort.bam, 01_raw_data/ref/ref_po_cp.fa
+    output: 03_vcf/03_svim/sampleA/variants.vcf
+    jobid: 0
+    wildcards: sample=sampleA
+
+RuleException in line 53 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/Snakefile:
+NameError: The name 'sample' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}

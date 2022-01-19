@@ -1,0 +1,41 @@
+```{r}
+
+library(data.table)
+library(dplyr)
+library(tidyr)
+
+d <- read.table("alignments.tsv",header=T,sep="\t")
+newd <- separate(d,queryID,c("Name","chr"),sep="_")
+newd <- newd[newd$refID!="0",]
+newd$queryStart <- newd$queryStart/1e6
+newd$queryEnd <- newd$queryEnd/1e6
+
+newd$refEnd <- newd$refEnd/1e6
+newd$refStart <- newd$refStart/1e6
+
+library(ggplot2)
+
+d2 <- newd[newd$chr=="chr01" & newd$refID=="1",]
+
+p1 <- ggplot(newd)+
+  #geom_point(aes(x=refStart,y=queryStart),size=0.01,color="red")+
+  #geom_point(aes(x=refEnd,y=queryEnd),size=0.01,color="red")+
+  geom_segment(aes(x=refStart,xend=refEnd,y=queryStart,yend=queryEnd),size=0.2,color="red")+
+  facet_grid(Name~refID,scales = "free")+
+  theme_bw()+
+  theme(
+    strip.text.x = element_text(size=6,color="black"),
+    strip.text.y = element_text(size=4,color="black",angle=0),
+    strip.background = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text = element_blank(),
+    panel.border = element_rect(size=0.3),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )+
+  scale_x_continuous(expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0))+
+  labs(x="SL5.0",y="")
+
+ggsave("FigS10.pdf",p1,height=24,width=17.8,units="cm")
+```

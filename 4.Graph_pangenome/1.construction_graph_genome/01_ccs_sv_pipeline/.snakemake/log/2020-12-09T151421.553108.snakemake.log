@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 104 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial2/Snakefile:
+Missing input files for rule consensus:
+03_vcf/03_svim/sampleA/variants.vcf

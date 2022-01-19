@@ -1,0 +1,248 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 3
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	2	consensus
+	2	cuteSV_call
+	2	index
+	2	ngmlr_alignment
+	2	pbsv_align
+	2	pbsv_call
+	2	pbsv_discovery
+	2	sniffles_call
+	2	sort
+	2	svim_call
+	21
+
+[Wed Dec  9 15:17:12 2020]
+rule ngmlr_alignment:
+    input: 01_raw_data/sampleA.ccs.fa
+    output: 02_bam/sampleA.ngmlr.bam
+    jobid: 19
+    wildcards: sample=sampleA
+
+
+[Wed Dec  9 15:17:12 2020]
+rule ngmlr_alignment:
+    input: 01_raw_data/sampleB.ccs.fa
+    output: 02_bam/sampleB.ngmlr.bam
+    jobid: 17
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:11 2020]
+Finished job 19.
+1 of 21 steps (5%) done
+
+[Wed Dec  9 15:20:11 2020]
+rule sort:
+    input: 02_bam/sampleA.ngmlr.bam
+    output: 02_bam/sampleA.ngmlr.sort.bam
+    jobid: 14
+    wildcards: sample=sampleA
+
+[Wed Dec  9 15:20:12 2020]
+Finished job 14.
+2 of 21 steps (10%) done
+
+[Wed Dec  9 15:20:12 2020]
+rule index:
+    input: 02_bam/sampleA.ngmlr.sort.bam
+    output: 02_bam/sampleA.ngmlr.sort.bam.bai
+    jobid: 15
+    wildcards: sample=sampleA
+
+[Wed Dec  9 15:20:12 2020]
+Finished job 15.
+3 of 21 steps (14%) done
+
+[Wed Dec  9 15:20:12 2020]
+rule svim_call:
+    input: 02_bam/sampleA.ngmlr.sort.bam, 02_bam/sampleA.ngmlr.sort.bam.bai
+    output: 03_vcf/03_svim/sampleA/variants.vcf, 03_vcf/03_svim/sampleA/pre-variants.vcf
+    jobid: 9
+    wildcards: sample=sampleA
+
+
+[Wed Dec  9 15:20:12 2020]
+rule pbsv_align:
+    input: 02_bam/sampleA.ngmlr.sort.bam, 02_bam/sampleA.ngmlr.sort.bam.bai
+    output: 02_bam/sampleA.pbsv.sort.bam
+    jobid: 20
+    wildcards: sample=sampleA
+
+[Wed Dec  9 15:20:16 2020]
+Finished job 17.
+4 of 21 steps (19%) done
+
+[Wed Dec  9 15:20:16 2020]
+rule sort:
+    input: 02_bam/sampleB.ngmlr.bam
+    output: 02_bam/sampleB.ngmlr.sort.bam
+    jobid: 11
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:17 2020]
+Finished job 11.
+5 of 21 steps (24%) done
+
+[Wed Dec  9 15:20:17 2020]
+rule index:
+    input: 02_bam/sampleB.ngmlr.sort.bam
+    output: 02_bam/sampleB.ngmlr.sort.bam.bai
+    jobid: 12
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:17 2020]
+Finished job 12.
+6 of 21 steps (29%) done
+
+[Wed Dec  9 15:20:17 2020]
+rule pbsv_align:
+    input: 02_bam/sampleB.ngmlr.sort.bam, 02_bam/sampleB.ngmlr.sort.bam.bai
+    output: 02_bam/sampleB.pbsv.sort.bam
+    jobid: 18
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:20 2020]
+Finished job 20.
+7 of 21 steps (33%) done
+
+[Wed Dec  9 15:20:20 2020]
+rule svim_call:
+    input: 02_bam/sampleB.ngmlr.sort.bam, 02_bam/sampleB.ngmlr.sort.bam.bai
+    output: 03_vcf/03_svim/sampleB/variants.vcf, 03_vcf/03_svim/sampleB/pre-variants.vcf
+    jobid: 5
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:21 2020]
+Finished job 18.
+8 of 21 steps (38%) done
+
+[Wed Dec  9 15:20:21 2020]
+rule pbsv_discovery:
+    input: 02_bam/sampleB.pbsv.sort.bam
+    output: 03_vcf/04_pbsv/sampleB/pbsv.svsig.gz
+    jobid: 13
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:23 2020]
+Finished job 13.
+9 of 21 steps (43%) done
+
+[Wed Dec  9 15:20:23 2020]
+rule cuteSV_call:
+    input: 02_bam/sampleB.ngmlr.sort.bam, 02_bam/sampleB.ngmlr.sort.bam.bai
+    output: 03_vcf/02_cuteSV/sampleB.cuteSV.vcf
+    jobid: 4
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:39 2020]
+Finished job 4.
+10 of 21 steps (48%) done
+
+[Wed Dec  9 15:20:39 2020]
+rule sniffles_call:
+    input: 02_bam/sampleB.ngmlr.sort.bam, 02_bam/sampleB.ngmlr.sort.bam.bai
+    output: 03_vcf/01_sniffles/sampleB.sniffles.vcf
+    jobid: 3
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:41 2020]
+Finished job 3.
+11 of 21 steps (52%) done
+
+[Wed Dec  9 15:20:41 2020]
+rule sniffles_call:
+    input: 02_bam/sampleA.ngmlr.sort.bam, 02_bam/sampleA.ngmlr.sort.bam.bai
+    output: 03_vcf/01_sniffles/sampleA.sniffles.vcf
+    jobid: 7
+    wildcards: sample=sampleA
+
+[Wed Dec  9 15:20:41 2020]
+Finished job 7.
+12 of 21 steps (57%) done
+
+[Wed Dec  9 15:20:41 2020]
+rule cuteSV_call:
+    input: 02_bam/sampleA.ngmlr.sort.bam, 02_bam/sampleA.ngmlr.sort.bam.bai
+    output: 03_vcf/02_cuteSV/sampleA.cuteSV.vcf
+    jobid: 8
+    wildcards: sample=sampleA
+
+[Wed Dec  9 15:20:42 2020]
+Finished job 8.
+13 of 21 steps (62%) done
+
+[Wed Dec  9 15:20:42 2020]
+rule pbsv_discovery:
+    input: 02_bam/sampleA.pbsv.sort.bam
+    output: 03_vcf/04_pbsv/sampleA/pbsv.svsig.gz
+    jobid: 16
+    wildcards: sample=sampleA
+
+[Wed Dec  9 15:20:42 2020]
+Finished job 16.
+14 of 21 steps (67%) done
+
+[Wed Dec  9 15:20:42 2020]
+rule pbsv_call:
+    input: 03_vcf/04_pbsv/sampleA/pbsv.svsig.gz
+    output: 03_vcf/04_pbsv/sampleA/pbsv.vcf
+    jobid: 10
+    wildcards: sample=sampleA
+
+[Wed Dec  9 15:20:43 2020]
+Finished job 10.
+15 of 21 steps (71%) done
+
+[Wed Dec  9 15:20:43 2020]
+rule pbsv_call:
+    input: 03_vcf/04_pbsv/sampleB/pbsv.svsig.gz
+    output: 03_vcf/04_pbsv/sampleB/pbsv.vcf
+    jobid: 6
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:43 2020]
+Finished job 6.
+16 of 21 steps (76%) done
+[Wed Dec  9 15:20:50 2020]
+Finished job 9.
+17 of 21 steps (81%) done
+
+[Wed Dec  9 15:20:50 2020]
+rule consensus:
+    input: 03_vcf/01_sniffles/sampleA.sniffles.vcf, 03_vcf/02_cuteSV/sampleA.cuteSV.vcf, 03_vcf/03_svim/sampleA/variants.vcf, 03_vcf/04_pbsv/sampleA/pbsv.vcf
+    output: 04_consensus_vcf/sampleA.consensus.vcf
+    jobid: 2
+    wildcards: sample=sampleA
+
+[Wed Dec  9 15:20:51 2020]
+Finished job 2.
+18 of 21 steps (86%) done
+[Wed Dec  9 15:20:51 2020]
+Finished job 5.
+19 of 21 steps (90%) done
+
+[Wed Dec  9 15:20:51 2020]
+rule consensus:
+    input: 03_vcf/01_sniffles/sampleB.sniffles.vcf, 03_vcf/02_cuteSV/sampleB.cuteSV.vcf, 03_vcf/03_svim/sampleB/variants.vcf, 03_vcf/04_pbsv/sampleB/pbsv.vcf
+    output: 04_consensus_vcf/sampleB.consensus.vcf
+    jobid: 1
+    wildcards: sample=sampleB
+
+[Wed Dec  9 15:20:51 2020]
+Finished job 1.
+20 of 21 steps (95%) done
+
+[Wed Dec  9 15:20:51 2020]
+localrule all:
+    input: 04_consensus_vcf/sampleB.consensus.vcf, 04_consensus_vcf/sampleA.consensus.vcf
+    jobid: 0
+
+[Wed Dec  9 15:20:51 2020]
+Finished job 0.
+21 of 21 steps (100%) done
+Complete log: /vol1/agis/huangsanwen_group/chenglin/sv_tutorial2/.snakemake/log/2020-12-09T151712.240826.snakemake.log

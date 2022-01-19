@@ -1,0 +1,3 @@
+NameError in line 18 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial1/Snakefile:
+name 'ref' is not defined
+  File "/vol1/agis/huangsanwen_group/chenglin/sv_tutorial1/Snakefile", line 18, in <module>

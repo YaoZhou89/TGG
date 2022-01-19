@@ -1,0 +1,54 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	2	index
+	2	sort_index
+	4
+
+[Tue Dec  8 15:40:52 2020]
+rule sort_index:
+    input: 02_bam/sampleA_ngmlr.bam
+    output: 02_bam/sampleA_ngmlr.sort.bam
+    jobid: 3
+    wildcards: sample=sampleA
+
+
+[Tue Dec  8 15:40:52 2020]
+rule sort_index:
+    input: 02_bam/sampleB_ngmlr.bam
+    output: 02_bam/sampleB_ngmlr.sort.bam
+    jobid: 2
+    wildcards: sample=sampleB
+
+[Tue Dec  8 15:40:55 2020]
+Finished job 3.
+1 of 4 steps (25%) done
+
+[Tue Dec  8 15:40:55 2020]
+rule index:
+    input: 02_bam/sampleA_ngmlr.sort.bam
+    output: 02_bam/sampleA_ngmlr.sort.bam.bai
+    jobid: 1
+    wildcards: sample=sampleA
+
+[Tue Dec  8 15:40:55 2020]
+Finished job 1.
+2 of 4 steps (50%) done
+[Tue Dec  8 15:40:56 2020]
+Finished job 2.
+3 of 4 steps (75%) done
+
+[Tue Dec  8 15:40:56 2020]
+rule index:
+    input: 02_bam/sampleB_ngmlr.sort.bam
+    output: 02_bam/sampleB_ngmlr.sort.bam.bai
+    jobid: 0
+    wildcards: sample=sampleB
+
+[Tue Dec  8 15:40:56 2020]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/.snakemake/log/2020-12-08T154052.095586.snakemake.log

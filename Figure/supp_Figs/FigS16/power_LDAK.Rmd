@@ -1,0 +1,29 @@
+
+```{r}
+
+data <- read.table("./combine.reml.stats",sep="\t",header=T)
+
+library(tidyr)
+library(dplyr)
+
+nd <- gather(data,parameter,log,P_1:P_0)
+nd <- nd[nd$log<0,]
+nd$SV <- factor(nd$SV,levels=c("SNP","InDels","SV","SNPs_InDels","SNPs_InDels_SVs"))
+
+library(ggplot2)
+
+p1 <- ggplot(nd)+
+  geom_boxplot(aes(x=SV,y=log,fill=parameter))+
+  scale_y_continuous(expand=c(0,0),limits=c(-1800,-800))+
+  labs(x="",y="-log")+
+  theme_bw()+
+  theme(
+    legend.position = "top",
+    axis.text = element_text(size=6,color="black"),
+    axis.title = element_text(size=6,color="black")
+  )
+
+
+ggsave("power-LDAK.pdf",p1,width=8.9,height=8.9,units="cm")
+
+```

@@ -1,0 +1,88 @@
+import pandas as pd
+
+# cluster info
+clusters = pd.read_table('../02_redup/neardups-clusters.tsv')
+
+# bam files
+# # bam files
+bams = ['00_bam/SL186.rm.bam','00_bam/SL265.rm.bam','00_bam/SL529.rm.bam','00_bam/SL534.rm.bam','00_bam/SL542.rm.bam','00_bam/SL578.rm.bam','00_bam/SL587.rm.bam','00_bam/SL591.rm.bam','00_bam/SL597.rm.bam','00_bam/SL628.rm.bam','00_bam/SL630.rm.bam','00_bam/SL641.rm.bam','00_bam/SL672.rm.bam','00_bam/SL707.rm.bam','00_bam/SL731.rm.bam','00_bam/SL733.rm.bam','00_bam/SL738.rm.bam','00_bam/SL750.rm.bam','00_bam/SL765.rm.bam','00_bam/SL769.rm.bam'] # 2 other samples from HGSVC
+# bams += ['HG03458.final.cram', 'HG01435.final.cram',  'HG00956.final.cram', 'HG00136.final.cram', 'HG03697.final.cram'] # 5 superpop rep
+# reference genome
+REF='/public10/home/sci0011/data/ref/SL5.0/SL5.0_chr_number.fa'
+
+rule main:
+    input: expand('called_vcf/cluster-{cl}-{seqn}_{start}_{end}.vcf', zip, cl=clusters['cmp'].to_list(), seqn=clusters['seqnames'].to_list(), start=clusters['start'].to_list(), end=clusters['end'].to_list())
+
+
+rule extract_cluster:
+    input:
+        vcf='../02_redup/graph-fordedup-{seqn}.vcf',
+        tsv='../02_redup/neardups-clusters.tsv'
+    output:
+        ref='fa/cluster-{cl}-{seqn}_{start}_{end}.fa',
+        vcf='vcf/cluster-{cl}-{seqn}_{start}_{end}.vcf'
+    shell:
+        "python extractCluster.py -f {REF} -v {input.vcf} -t {input.tsv} -c {wildcards.cl} -ov {output.vcf} -of {output.ref}"
+
+rule extract_reads:
+    input: bams
+    output: 'fastq/cluster-{cl}-{seqn}_{start}_{end}.fastq'
+    threads: 4
+    shell:
+        """
+        rm -f {output} {output}.log
+        for ff in {input}
+        do
+        samtools view -bh $ff {wildcards.seqn}:{wildcards.start}-{wildcards.end} | samtools fastq - >> {output} 2>> {output}.log
+        done
+        """
+
+rule vg_call:
+    input:
+        ref='fa/cluster-{cl}-{seqn}_{start}_{end}.fa',
+        vcf='vcf/cluster-{cl}-{seqn}_{start}_{end}.vcf',
+        reads='fastq/cluster-{cl}-{seqn}_{start}_{end}.fastq'
+    output: 'called_vcf/cluster-{cl}-{seqn}_{start}_{end}.vcf'
+    params: vgpref='graph/cluster-{cl}-{seqn}_{start}_{end}'
+    shell:
+        """
+        samtools faidx {input.ref}
+        vg construct -t 1 -v {input.vcf} -r {input.ref} -a -S -f > {params.vgpref}.vg 2> {params.vgpref}.log
+        vg index -t 1 -g {params.vgpref}.gcsa -x {params.vgpref}.xg -L {params.vgpref}.vg 2>> {params.vgpref}.log
+        vg map -t 1 -x {params.vgpref}.xg -g {params.vgpref}.gcsa -f {input.reads} > {params.vgpref}.gam 2>> {params.vgpref}.log
+        vg pack -t 1 -Q 1 -x {params.vgpref}.xg -g {params.vgpref}.gam -o {params.vgpref}.pack 2>> {params.vgpref}.log
+        vg call -t 1 -k {params.vgpref}.pack -s test -v {input.vcf} {params.vgpref}.xg > {output} 2>> {params.vgpref}.log
+        rm -f {input.vcf} {input.ref} {input.ref}.fai {input.reads} {input.reads}.log {params.vgpref}.log {params.vgpref}.pack {params.vgpref}.xg {params.vgpref}.gam {params.vgpref}.vg {params.vgpref}.gcsa {params.vgpref}.gcsa.lcp
+        """
+
+ruleorder: wrapper > vg_call
+rule wrapper:
+    input:
+        vcf='../02_redup/graph-fordedup-{seqn}.vcf',
+        tsv='../02_redup/neardups-clusters.tsv',
+        bams=bams
+    output: 'called_vcf/cluster-{cl}-{seqn}_{start}_{end}.vcf'
+    params:
+        vgpref='graph/cluster-{cl}-{seqn}_{start}_{end}',
+        vcf='vcf/cluster-{cl}-{seqn}_{start}_{end}.vcf',
+        ref='fa/cluster-{cl}-{seqn}_{start}_{end}.fa',
+        fq='fastq/cluster-{cl}-{seqn}_{start}_{end}.fastq'
+    threads: 4
+    shell:
+        """
+        python extractCluster.py -f {REF} -v {input.vcf} -t {input.tsv} -c {wildcards.cl} -ov {params.vcf} -of {params.ref}
+        rm -f {params.fq} {params.fq}.log
+        sleep $((1 + RANDOM % 10))
+        for ff in {input.bams}
+        do
+        echo $ff
+        samtools view -bh $ff {wildcards.seqn}:{wildcards.start}-{wildcards.end} | samtools fastq - >> {params.fq} 2>> {params.fq}.log
+        done
+        samtools faidx {params.ref}
+        vg construct -t 1 -v {params.vcf} -r {params.ref} -a -S -f > {params.vgpref}.vg 2> {params.vgpref}.log
+        vg index -t {threads} -g {params.vgpref}.gcsa -x {params.vgpref}.xg -L {params.vgpref}.vg 2>> {params.vgpref}.log
+        vg map -t {threads} -x {params.vgpref}.xg -g {params.vgpref}.gcsa -f {params.fq} > {params.vgpref}.gam 2>> {params.vgpref}.log
+        vg pack -t {threads} -Q 1 -x {params.vgpref}.xg -g {params.vgpref}.gam -o {params.vgpref}.pack 2>> {params.vgpref}.log
+        vg call -t {threads} -k {params.vgpref}.pack -s test -v {params.vcf} {params.vgpref}.xg > {output} 2>> {params.vgpref}.log
+        rm -f {params.vcf} {params.ref} {params.ref}.fai {params.fq} {params.fq}.log {params.vgpref}.log {params.vgpref}.pack {params.vgpref}.xg {params.vgpref}.gam {params.vgpref}.vg {params.vgpref}.gcsa {params.vgpref}.gcsa.lcp
+        """

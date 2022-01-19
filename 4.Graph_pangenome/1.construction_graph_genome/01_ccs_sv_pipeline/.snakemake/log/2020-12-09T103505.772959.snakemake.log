@@ -1,0 +1,80 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	2	consensus
+	2	cuteSV_call
+	2	ngmlr_alignment
+	2	pbsv_align
+	2	pbsv_call
+	2	pbsv_discovery
+	2	sniffles_call
+	2	sort
+	2	svim_call
+	19
+
+[Wed Dec  9 10:35:05 2020]
+rule ngmlr_alignment:
+    input: 01_raw_data/sampleB.ccs.fa
+    output: 02_bam/sampleB.ngmlr.bam
+    jobid: 15
+    wildcards: sample=sampleB
+
+[Wed Dec  9 10:41:00 2020]
+Finished job 15.
+1 of 19 steps (5%) done
+
+[Wed Dec  9 10:41:00 2020]
+rule sort:
+    input: 02_bam/sampleB.ngmlr.bam
+    output: 02_bam/sampleB.ngmlr.sort.bam
+    jobid: 11
+    wildcards: sample=sampleB
+
+[Wed Dec  9 10:41:03 2020]
+Finished job 11.
+2 of 19 steps (11%) done
+
+[Wed Dec  9 10:41:03 2020]
+rule ngmlr_alignment:
+    input: 01_raw_data/sampleA.ccs.fa
+    output: 02_bam/sampleA.ngmlr.bam
+    jobid: 17
+    wildcards: sample=sampleA
+
+[Wed Dec  9 10:46:48 2020]
+Finished job 17.
+3 of 19 steps (16%) done
+
+[Wed Dec  9 10:46:48 2020]
+rule sort:
+    input: 02_bam/sampleA.ngmlr.bam
+    output: 02_bam/sampleA.ngmlr.sort.bam
+    jobid: 13
+    wildcards: sample=sampleA
+
+[Wed Dec  9 10:46:49 2020]
+Finished job 13.
+4 of 19 steps (21%) done
+
+[Wed Dec  9 10:46:49 2020]
+rule cuteSV_call:
+    input: 02_bam/sampleB.ngmlr.sort.bam
+    output: 03_vcf/02_cuteSV/sampleB.cuteSV.vcf
+    jobid: 4
+    wildcards: sample=sampleB
+
+[Wed Dec  9 10:47:06 2020]
+Error in rule cuteSV_call:
+    jobid: 4
+    output: 03_vcf/02_cuteSV/sampleB.cuteSV.vcf
+    shell:
+        cuteSV 02_bam/sampleB.ngmlr.sort.bam 01_raw_data/ref/sv_refer.fa 03_vcf/02_cuteSV/sampleB.cuteSV.vcf ./ --max_cluster_bias_INS 1000 --diff_ratio_merging_INS 0.9 --max_cluster_bias_DEL 1000 --diff_ratio_merging_DEL 0.5
+        (exited with non-zero exit code)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /vol1/agis/huangsanwen_group/chenglin/sv_tutorial1/.snakemake/log/2020-12-09T103505.772959.snakemake.log

@@ -1,0 +1,18 @@
+rawdata:
+        Pacbio:
+                - "tomato"
+        HiC:
+                - "tomato"
+
+parameters:
+        scaffolding:
+                HiC:
+                        part: 16
+
+
+reference_genomes:
+        "tomtato.p_ctg.fa"
+
+
+purge_level:
+        0

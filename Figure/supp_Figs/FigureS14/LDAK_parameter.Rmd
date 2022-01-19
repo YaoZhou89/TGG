@@ -1,0 +1,38 @@
+```{r}
+
+data <- read.table("./simulation.tsv",header=F,sep="\t")
+colnames(data) <- c("Name","Marker","exp_h2","QTN","rep","Sim","Model","Type","h2","pSNPs","pSVs")
+
+g_ticks <- seq(0.15,0.9,0.15)
+
+
+#combine_data <- data[data$Type=="combine",]
+summ_data <- data %>%
+   group_by(exp_h2,Type,Marker,QTN) %>%
+   summarise(mean=mean(h2))
+
+library(ggsci)
+
+summ_data$Type <- gsub("combine","",summ_data$Type)
+summ_data$Type <- -0.1*as.numeric(summ_data$Type)
+
+#summ_data$Type <- factor(summ_data$Type)
+
+ggplot(summ_data,aes(x=exp_h2,y=mean,group=exp_h2))+
+  #geom_boxplot()+
+  geom_point(aes(color=Type),size=0.5,alpha=0.7)+
+  geom_abline(slope = 1,size=0.3,linetype="dashed")+
+  facet_grid(Marker~QTN)+
+  scale_x_continuous(breaks = g_ticks)+
+  scale_y_continuous(breaks = g_ticks)+
+  labs(x="Expected h2",y="Estimated h2")+
+  theme_bw()+
+  theme(
+    axis.text=element_text(size=6,color="black"),
+    axis.title=element_text(size=6,color="black"),
+    legend.text = element_text(size=6,color="black")
+  )
+
+
+ggsave("./FigS16.pdf",width=17.8,height=9,units="cm")
+```

@@ -1,0 +1,44 @@
+rawdata:
+    ## rawdata/04.rna-seq/{sample}.R1.fastq.gz
+    RNA:
+        - "potato_stolon"
+    ## rawdata/05.iso-seq/{sample}.subreads.bam
+    ISO:
+
+name : "DM"
+outdir : "/vol1/agis/huangsanwen_group/baozhigui/test/Annotation/Annotation" 
+
+parameters:
+    EDTA:
+        ## final step [all,filter,final,anno]
+        step: "all"
+        ## rice,maize,others
+        species: "others"
+        sensitive: 1
+        ## maize corrected TE lib
+        lib:
+        cds:
+        # lib: "maizeTE02052020"
+        # cds: "Zea_mays.B73_RefGen_v4.cdna.all.fa"
+
+
+
+########   software and script   ########
+biosoft:
+    env:
+        module: "source /public/software/modules-4.5.1/init/bash && module use /public/home/baozhigui/software/modulefiles && module purge"
+        mf: "module use /public/home/baozhigui/software/modulefiles"
+        mp: "module purge"
+        asm: "module load asm/1.0"
+    repeat:
+        EDTA: "module load EDTA/1.9.4"
+        #EDTA: "source /public/home/baozhigui/miniconda3/bin/activate EDTA"
+    braker:
+        braker2: "module load braker2/2.1.5"
+        mapping: "source /public/home/baozhigui/miniconda3/bin/activate mapping"
+        #QC: "source /public/home/baozhigui/miniconda3/bin/activate QC"
+        QC: "module load QC/1.0"
+        genemark: "module load GeneMark-ES/4.3.8"
+        augustus_conf: "config"
+    maker:
+        maker2: "module load maker/2.31.11"

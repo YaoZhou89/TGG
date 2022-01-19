@@ -1,0 +1,5 @@
+Building DAG of jobs...
+ChildIOException:
+File/directory is a child to another output:
+/vol1/agis/huangsanwen_group/chenglin/sv_tutorial/03_vcf/03_svim/sampleA
+/vol1/agis/huangsanwen_group/chenglin/sv_tutorial/03_vcf/03_svim/sampleA/variants.vcf

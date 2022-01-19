@@ -1,0 +1,79 @@
+Building DAG of jobs...
+Job counts:
+	count	jobs
+	1	all
+	2	consensus
+	2	cuteSV_call
+	2	index
+	2	ngmlr_alignment
+	2	pbsv_align
+	2	pbsv_call
+	2	pbsv_discovery
+	2	sniffles_call
+	2	sort
+	2	svim_call
+	21
+
+[Wed Dec  9 15:15:27 2020]
+rule ngmlr_alignment:
+    input: 01_raw_data/sampleA.ccs.fa
+    output: 02_bam/sampleA.ngmlr.bam
+    jobid: 19
+    wildcards: sample=sampleA
+
+ngmlr -t 2 -r 01_raw_data/ref/sv_refer.fa -q 01_raw_data/sampleA.ccs.fa -o 02_bam/sampleA.ngmlr.bam 
+
+[Wed Dec  9 15:15:27 2020]
+rule ngmlr_alignment:
+    input: 01_raw_data/sampleB.ccs.fa
+    output: 02_bam/sampleB.ngmlr.bam
+    jobid: 17
+    wildcards: sample=sampleB
+
+ngmlr -t 2 -r 01_raw_data/ref/sv_refer.fa -q 01_raw_data/sampleB.ccs.fa -o 02_bam/sampleB.ngmlr.bam 
+
+[Wed Dec  9 15:15:27 2020]
+rule sort:
+    input: 02_bam/sampleA.ngmlr.bam
+    output: 02_bam/sampleA.ngmlr.sort.bam
+    jobid: 14
+    wildcards: sample=sampleA
+
+samtools sort -@ 2 -O BAM -o 02_bam/sampleA.ngmlr.sort.bam 02_bam/sampleA.ngmlr.bam 
+
+[Wed Dec  9 15:15:27 2020]
+rule sort:
+    input: 02_bam/sampleB.ngmlr.bam
+    output: 02_bam/sampleB.ngmlr.sort.bam
+    jobid: 11
+    wildcards: sample=sampleB
+
+samtools sort -@ 2 -O BAM -o 02_bam/sampleB.ngmlr.sort.bam 02_bam/sampleB.ngmlr.bam 
+
+[Wed Dec  9 15:15:27 2020]
+rule index:
+    input: 02_bam/sampleA.ngmlr.sort.bam
+    output: 02_bam/sampleA.ngmlr.sort.bam.bai
+    jobid: 15
+    wildcards: sample=sampleA
+
+samtools index 02_bam/sampleA.ngmlr.sort.bam 
+
+[Wed Dec  9 15:15:27 2020]
+rule index:
+    input: 02_bam/sampleB.ngmlr.sort.bam
+    output: 02_bam/sampleB.ngmlr.sort.bam.bai
+    jobid: 12
+    wildcards: sample=sampleB
+
+samtools index 02_bam/sampleB.ngmlr.sort.bam 
+
+[Wed Dec  9 15:15:27 2020]
+rule svim_call:
+    input: 02_bam/sampleB.ngmlr.sort.bam, 02_bam/sampleB.ngmlr.sort.bam.bai
+    output: 03_vcf/03_svim/sampleB/variants.vcf, 03_vcf/03_svim/sampleB/pre-variants.vcf
+    jobid: 5
+    wildcards: sample=sampleB
+
+RuleException in line 62 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial2/Snakefile:
+NameError: The name 'output1' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}

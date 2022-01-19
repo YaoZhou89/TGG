@@ -1,0 +1,31 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	2	pbsv_calling
+	2
+
+[Tue Dec  8 22:25:35 2020]
+rule pbsv_calling:
+    input: 03_vcf/04_pbsv/sampleA/pbsv.svsig.gz, 01_raw_data/ref/ref_po_cp.fa
+    output: 03_vcf/04_pbsv/sampleA/pbsv.vcf
+    jobid: 1
+    wildcards: sample=sampleA
+
+[Tue Dec  8 22:25:36 2020]
+Finished job 1.
+1 of 2 steps (50%) done
+
+[Tue Dec  8 22:25:36 2020]
+rule pbsv_calling:
+    input: 03_vcf/04_pbsv/sampleB/pbsv.svsig.gz, 01_raw_data/ref/ref_po_cp.fa
+    output: 03_vcf/04_pbsv/sampleB/pbsv.vcf
+    jobid: 0
+    wildcards: sample=sampleB
+
+[Tue Dec  8 22:25:37 2020]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/.snakemake/log/2020-12-08T222534.155270.snakemake.log

@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	2	ngmlr_alignment
+	2	sniffles_call
+	2	sort_index
+	6
+
+[Tue Dec  8 15:50:51 2020]
+rule ngmlr_alignment:
+    input: 01_raw_data/sampleB.ccs.fa, 01_raw_data/ref/ref_po_cp.fa
+    output: 02_bam/sampleB.ngmlr.bam
+    jobid: 4
+    wildcards: sample=sampleB
+
+
+[Tue Dec  8 15:50:52 2020]
+rule ngmlr_alignment:
+    input: 01_raw_data/sampleA.ccs.fa, 01_raw_data/ref/ref_po_cp.fa
+    output: 02_bam/sampleA.ngmlr.bam
+    jobid: 5
+    wildcards: sample=sampleA
+
+Will exit after finishing currently running jobs.

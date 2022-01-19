@@ -1,0 +1,17 @@
+include: "rule/00.commom.smk"
+rule all:
+    input:
+        ########### braker #########
+        expand("results/03.annotation/01.ref/softmask.{name}.fa",name=name),
+        expand("results/03.annotation/04.RNA-seq/stringtie/{name}.{sample}.gff3",name=name,sample=Rsamples),
+        expand("results/03.annotation/05.braker_{name}/augustus.hints.gff3",name=name),
+        expand("results/03.annotation/06.maker/round1/{name}.maker.output/{name}.maker.gff",name=name),
+        expand("results/03.annotation/06.maker/round2/{name}.maker.output/{name}.maker.gff",name=name)
+
+
+
+######## modules ######
+include: "rule/01.EDTA.smk"
+#include: "rule/06.iso-seq.smk"
+include: "rule/02.braker.smk"
+include: "rule/03.maker.smk"

@@ -1,0 +1,31 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	2	svim_call
+	2
+
+[Tue Dec  8 21:02:08 2020]
+rule svim_call:
+    input: 02_bam/sampleB.ngmlr.sort.bam, 01_raw_data/ref/ref_po_cp.fa
+    output: 03_vcf/03_svim/sampleB/variants.vcf
+    jobid: 0
+    wildcards: sample=sampleB
+
+[Tue Dec  8 21:03:24 2020]
+Finished job 0.
+1 of 2 steps (50%) done
+
+[Tue Dec  8 21:03:24 2020]
+rule svim_call:
+    input: 02_bam/sampleA.ngmlr.sort.bam, 01_raw_data/ref/ref_po_cp.fa
+    output: 03_vcf/03_svim/sampleA/variants.vcf
+    jobid: 1
+    wildcards: sample=sampleA
+
+[Tue Dec  8 21:04:38 2020]
+Finished job 1.
+2 of 2 steps (100%) done
+Complete log: /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/.snakemake/log/2020-12-08T210208.546843.snakemake.log

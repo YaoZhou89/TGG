@@ -1,0 +1,31 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	2	consensus
+	3
+
+[Wed Dec  9 13:08:30 2020]
+rule consensus:
+    input: 03_vcf/01_sniffles/sampleA.sniffles.vcf, 03_vcf/02_cuteSV/sampleA.cuteSV.vcf, 03_vcf/03_svim/sampleA/variants.vcf, 03_vcf/04_pbsv/sampleA/pbsv.vcf
+    output: 04_consensus_vcf/sampleA.consensus.vcf
+    jobid: 1
+    wildcards: sample=sampleA
+
+[Wed Dec  9 13:08:30 2020]
+Error in rule consensus:
+    jobid: 1
+    output: 04_consensus_vcf/sampleA.consensus.vcf
+    shell:
+        
+        ls 03_vcf/01_sniffles/sampleA.sniffles.vcf 03_vcf/02_cuteSV/sampleA.cuteSV.vcf 03_vcf/03_svim/sampleA/variants.vcf 03_vcf/04_pbsv/sampleA/pbsv.vcf> 03_vcf/05_sample_list/list_sampleA
+        /public/agis/huangsanwen_group/chenglin/softwares/SURVIVOR-master/Debug/SURVIVOR merge 03_vcf/05_sample_list/list_sampleA 1000 2 1 1 0 30 04_consensus_vcf/sampleA.consensus.vcf
+        
+        (exited with non-zero exit code)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /vol1/agis/huangsanwen_group/chenglin/sv_tutorial1/.snakemake/log/2020-12-09T130830.081510.snakemake.log

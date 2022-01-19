@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 10 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial/Snakefile:
+Missing input files for rule ngmlr_alignment:
+01_raw_data/sample.ccs.fa

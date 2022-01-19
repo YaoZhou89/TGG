@@ -1,0 +1,3 @@
+WorkflowError in line 8 of /vol1/agis/huangsanwen_group/chenglin/sv_tutorial1/Snakefile:
+Config file is not valid JSON or YAML. In case of YAML, make sure to not mix whitespace and tab indentation.
+  File "/vol1/agis/huangsanwen_group/chenglin/sv_tutorial1/Snakefile", line 8, in <module>

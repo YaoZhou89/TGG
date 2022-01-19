@@ -1,0 +1,76 @@
+__default__:
+  queue: cu
+  nCPUs: 4
+  memory: 8
+  name: "{rule}.{wildcards}.JOBNAME"
+  output: "logs/cluster/{rule}.{wildcards}.out"
+  error: "logs/cluster/{rule}.{wildcards}.err"
+
+
+### EDTA ###
+sl:
+  nCPUs: 1
+  memory: 8
+
+LTR:
+  nCPUs: "{threads}"
+  memory: 20
+
+TIR:
+  nCPUs: "{threads}"
+  memory: 20
+
+Helitron:
+  nCPUs: "{threads}"
+  memory: 20
+
+final:
+  nCPUs: "{threads}"
+  memory: 20
+
+mask:
+  nCPUs: 1
+  memory: 8
+
+### RNA-seq & braker ###
+fastp_RNA:
+  nCPUs: "{threads}"
+  memory: 8
+
+md5_RNA:
+  nCPUs: 1
+  memory: 8
+
+fastqc_RNA:
+  nCPUs: "{threads}"
+  memory: 8
+
+hisat_build:
+  nCPUs: "{threads}"
+  memory: 16
+
+hisat_mapping:
+  nCPUs: "{threads}"
+  memory: 16
+
+stringtie:
+  nCPUs: "{threads}"
+  memory: 8
+
+hardmask_hisat_build:
+  nCPUs: "{threads}"
+  memory: 16
+
+hardmask_hisat_mapping:
+  nCPUs: "{threads}"
+  memory: 16
+
+hardmask_iso_mapping:
+  nCPUs: "{threads}"
+  memory: 16
+
+braker:
+  nCPUs: "{threads}"
+  memory: 20
+
+
