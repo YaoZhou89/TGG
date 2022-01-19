@@ -10,15 +10,11 @@
 4.  Graph_pangenome([graph_construction](4.Graph_pangenome/1.construction_graph_genome/Readme.md) and [graph_annotation](4.Graph_pangenome/2.graphAnnotation/Readme.md) )
 5.  [Missing_heritability_analysis](5.Missing_heritability_analysis/Readme.md)
 
-## Figures/Plots
-
-[Figures and plots used in the publication](Figure/Readme.md)
 
 
+## Website
 
-## Links for external data
-
-[Our web-based database](http://solomics.agis.org.cn/tomato/)
+[Solomics - tomato](http://solomics.agis.org.cn/tomato/)
 
 
 
