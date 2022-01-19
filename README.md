@@ -8,7 +8,7 @@
 2.  [Genome_annotation](2.Genome_annotation/Readme.md)
 3.  [Pan-genome_analysis]( 3.Pan-genome_analysis/Readme.md)
 4.  Graph_pangenome([graph_construction](4.Graph_pangenome/1.construction_graph_genome/Readme.md) and [graph_annotation](4.Graph_pangenome/2.graphAnnotation/Readme.md) )
-5.  [Missing_heritability_analysis](4.Missing_heritability_analysis/Readme.md)
+5.  [Missing_heritability_analysis](5.Missing_heritability_analysis/Readme.md)
 
 ## Figures/Plots
 
