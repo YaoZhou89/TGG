@@ -12,7 +12,7 @@
 
 ## Figures/Plots
 
-[Figures and plots used in the publication](Figure/README.md)
+[Figures and plots used in the publication](Figure/Readme.md)
 
 
 
