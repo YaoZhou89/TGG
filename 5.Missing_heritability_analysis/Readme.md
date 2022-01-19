@@ -120,7 +120,7 @@ for chr in {1..12}; do gcta64 --mlma --bfile input.chr$chr --pheno pheno.txt --o
 
 
 
-## Allelic and Locus heterogenetity using LASSO
+## LASSO analysis
 
 Beagle is applied for variation imputation (https://github.com/adrianodemarino/Imputation_beagle_tutorial)
 
