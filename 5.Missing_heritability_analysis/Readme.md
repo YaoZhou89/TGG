@@ -85,7 +85,7 @@ There is a small demo for heritability estimation.
 
 
 ```shell
-plink  --vcf test.vcf.gz   --recode --out output --double-id
+plink  --vcf test.vcf.gz --recode --out output --double-id
 plink  --file output --make-bed --out  output
 plink --keep meta_ID.plink  --bfile plink  --make-bed --maf 0.005 --out meta
 plink --bfile meta --recode vcf-iid --out meta
@@ -114,8 +114,6 @@ We used a generalized `REML` (restricted maximum likelihood) solver for estimati
 ```shell
 ~/software/ldak.out --pheno /public10/home/sci0011/projects/tomato2/12_pheno/03_exp_meta/pheno_exp_meta.txt --mpheno 1709  --grm LDAK-Thin  --covar /public10/home/sci0011/projects/tomato2/17_cov/01_snps/pheno.cov --reml 1709 --constrain YES
 ```
-
-
 
 
 
@@ -159,7 +157,7 @@ WGS --model vcf --type vcf2GD --file 10000.snps.filtered.vcf --out 10000.snps.da
 
 ```shell
 ## this is a demo
-Rscript script/cal.r
+Rscript script/lasso.demo.r
 ```
 
 
@@ -312,6 +310,6 @@ The package rrBLUP was used for the genomic selection of metabolites. SNPs and I
 
 ```shell
 ## a demo
-Rscript script/sv.r
+Rscript script/rrBLUP.r
 ```
 

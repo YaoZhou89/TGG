@@ -198,8 +198,7 @@ lassopv<-function (x,y,normalize=TRUE,H0=c("spherical","normal"),log.p=FALSE,max
 	rm(GDneob,Porderb)
 	return(seqQTN)
 }
-args <- commandArgs()
-num=args[6]
+num=4
 dsnps = try( read.table(paste("./",num,".dat",sep=""),head=F), silent=TRUE)
 if ('try-error' %in% class(dsnps)) {
   dsnps = NULL
@@ -211,13 +210,12 @@ if ('try-error' %in% class(dsnps)) {
 dat = dsnps
 GM = msnps
 if(nrow(dat)>1){
-
 a = Blink.LDRemove(GDneo=dat,LD=0.84,Porder=seq(1:nrow(dat)))
 }else{
 a=1
 }
 if (!is.null(dat)){
-  y = read.table(paste("./",num,".indi.blp",sep=""),head=F)
+  y = read.table("pheno.txt",head=T)
   colnames(GM) = c("ID","chr","pos")
   # EM-lasso analysis
   p = try( lassopv(x=t(dat[a,]),y=y[,4]+y[,6]+y[,8],H0=c("spherical"),use.Gram=F), silent=TRUE)

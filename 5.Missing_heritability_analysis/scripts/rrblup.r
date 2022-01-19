@@ -1,11 +1,11 @@
 library(rrBLUP)
 args <- commandArgs()
-rep = args[6]
-fold = args[7]
+rep = 1
+fold = 1
 phe = read.table("/public10/home/sci0011/projects/tomato2/37_GS/01_phenotype/meta.txt",head=T)
-ksnp = read.table("/public10/home/sci0011/projects/tomato2/37_GS/07_snps_linear/K.txt",head=F)
-kindel = read.table("/public10/home/sci0011/projects/tomato2/37_GS/08_indels_linear/K.txt",head=F)
-ksv = read.table("/public10/home/sci0011/projects/tomato2/37_GS/09_svs_linear/K.txt",head=F)
+ksnp = read.table("/public10/home/sci0011/projects/tomato2/37_GS/02_snps_only/K.txt",head=F)
+kindel = read.table("/public10/home/sci0011/projects/tomato2/37_GS/03_indels_only/K.txt",head=F)
+ksv = read.table("/public10/home/sci0011/projects/tomato2/37_GS/04_svs_only/K.txt",head=F)
 # K = list(ksnp= as.matrix(ksnp),kindel = as.matrix(kindel),ksv = as.matrix(ksv))
 cov =read.table("/public10/home/sci0011/projects/tomato2/17_cov/01_snps/pheno.cov",head=T)
 
@@ -50,14 +50,4 @@ for (p in 5:974){
   res[9,p-2]  = cor(phe[idx,p],ans$g[idx],use="pairwise.complete.obs")
   
 }
-write.table(res,paste("rep",rep,"_fold",fold,".rrBLUP.linear.txt",sep=""),col.names = T,row.names = F,quote=F,sep="\t")
-
-
-
-# myGS = iGS.eps(X = as.matrix(cov[,3:6]),Y= Y[,c(1,5)],K = K,alg="fs")
-# phe1 = myGS$phe[,1]
-
-# source("/public10/home/sci0011/soft/GST/calcAIvar.R")
-# source("/public10/home/sci0011/soft/GST/gBLUP.eps.R")
-# source("/public10/home/sci0011/soft/GST/iGS.eps.R")
-# source("/public10/home/sci0011/soft/GST/Keps.R")
+write.table(res,paste("rep",rep,"_fold",fold,".rrBLUP.txt",sep=""),col.names = T,row.names = F,quote=F,sep="\t")
