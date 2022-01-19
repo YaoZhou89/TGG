@@ -1,26 +1,10 @@
 # Heritability analysis
 
-
-## Simulation
 ### Phenotye simulation
 
 ```shell
-
+sh simPhe.sh
 ```
-
-### Effects of the parameters
-
-```shell
-```
-
-### Effect of incomplete LD
-
-```shell
-```
-
-
-
-
 
 ## Phenotype data preparion
 
@@ -31,9 +15,12 @@ To quantify the expression of all genes, we apply the `Kallisto` software
 ```shell
 kallisto index ./all.gene.cdna.fa.gz -i all.gene.cdna.fa.index
 kallisto quant -i ./all.gene.cdna.fa.gz -o ./Result -t 4 -b 100 PATH/Sample_R1.fq.gz PATH/Sample_R2.fq.gz 
+```
 
-## expression data filter
+Normalization of expression
 
+```shell
+Rscript script/prepare_gene_expression.R
 ```
 
 To remove potential batch effects and cconfounding factors impacting gene expression, the Probabilistic Estimation of Expression Residuals (`PEER`) method is performed with the top four factors as covariates.
@@ -134,56 +121,29 @@ We used a generalized `REML` (restricted maximum likelihood) solver for estimati
 
 ## Genome-wide association study
 
-For the mixed linear model (`MLM`), we used the leave-one-chromosome-out (LOCO) method and the mixed model implemented in `GCTA`. Following pruning with `Plink`  with option-indep-pairwise 50 5 0.2, SNPs were used for the estimation of a kinship matrix (GRM).  (https://yanglab.westlake.edu.cn/software/gcta/)
-
-The command for computing a kinship matrix.
+For the mixed linear model (`MLM`), we used the leave-one-chromosome-out (LOCO) method and the mixed model implemented in `GCTA`. The pruned SNPs were used for the estimation of a kinship matrix (GRM) using LDAK and then performed GWAS using GCTA ((https://yanglab.westlake.edu.cn/software/gcta/))
 
 ```shell
-#!/bin/bash
-for j in {1..12}
-do
-ldak --calc-kins-direct exp$j --bfile ../../14_genotype/01_snps/03_prune/332 --extract snps/thin.in --weights snps/weights.short --power -.5  --chr $j &
-done
-wait
+## Calculate kinship matrix for each chromosome using LDAK
+ldak --bfile input --thin exp --window-prune .5 --window-kb 100
+
+for j in {1..12}; do ldak --calc-kins-direct exp$j --bfile input --ignore-weights YES --power -0.5 --extract exp.in --chr $j; done
+
+for j in {1..12}; do echo "exp$j" >> list.All; done
+ldak --add-grm expAll --mgrm list.All
+for j in {1..12}; do echo "expAll exp$j" > list.$j; ldak --sub-grm expN$j --mgrm list.$j; done
+
+## Genome-wide association study by chromosome using GCTA
+for chr in {1..12}; do gcta64 --mlma --bfile input.chr$chr --pheno pheno.txt --out 4.chr$chr --thread-num 1 --mpheno 4 --grm expN$chr --qcovar pheno.cov ; done
 ```
 
 
 
-```shell
-#!/bin/bash
-chr=$1
-file=$2
-mkdir -p assoc$file
-cd assoc$file
-
-while read line
-do
-if [ ! -f "$line.chr$chr.p.gz" ]; then
-gcta64 --mlma --bfile /public10/home/sci0011/projects/tomato2/14_genotype/01_snps/03_prune/332.chr$chr --pheno /public10/home/sci0011/projects/tomato2/12_pheno/03_exp_meta/pheno_exp_meta.txt --out $line.chr$chr --thread-num 1 --mpheno $line --grm /public10/home/sci0011/projects/tomato2/16_kinship/04_gwas/332N$chr --qcovar /public10/home/sci0011/projects/tomato2/17_cov/01_snps/pheno.cov &
-fi
-done < ../$file
-wait
-
-while read line
-do
-if [ ! -f "$line.chr$chr.p.gz" ]; then
-awk '{print $1,$2,$3,$7,$8,$9}' $line.chr$chr.mlma > $line.chr$chr.p
-bgzip $line.chr$chr.p &
-rm $line.chr$chr.mlma
-fi
-done < ../$file
-wait
-```
-
-
-
-
-
-## Allelic and Locus heterogenetity
+## Allelic and Locus heterogenetity using LASSO
 
 Beagle is applied for variation imputation (https://github.com/adrianodemarino/Imputation_beagle_tutorial)
 
-Lassopv software is applied to caculate allelic heterogeneity (https://github.com/lingfeiwang/lassopv)
+Lassopv software is applied to association study (https://github.com/lingfeiwang/lassopv)
 
 ## Prepare genotype
 
@@ -197,10 +157,9 @@ WGS --model vcf --type vcf2GD --file 10000.snps.filtered.vcf --out 10000.snps.da
 
 ## Using lassopv package
 
-```R
-#!/bin/bash
-f=$1
-cat $f | Rscript cal.r 1709
+```shell
+## this is a demo
+Rscript script/cal.r
 ```
 
 
@@ -349,20 +308,10 @@ cyt = exportNetworkToCytoscape(modTOM,edgeFile = paste("AS-edges-", paste(module
 
 # Genomic selection
 
-The package rrBLUP was used for the genomic prediction of metabolites. SNPs and InDels with weight larger than zero were used to derive the kinship matrix with the A.mat function implemented in rrBLUP. The prediction accuracy was obtained by performing a five-fold cross-validation with 20 repetitions (https://github.com/cran/rrBLUP).
-
-`cal.svs.sh`  is genetic selection for SVs
+The package rrBLUP was used for the genomic selection of metabolites. SNPs and InDels with weight larger than zero were used to derive the kinship matrix with the A.mat function implemented in rrBLUP. The prediction accuracy was obtained by performing a five-fold cross-validation with 20 repetitions (https://github.com/cran/rrBLUP).
 
 ```shell
-#!/bin/bash
-for rep in {1..20}
-do
-for fold in {1..5}
-do
-Rscript sv.r $rep $fold &
-done
-wait
-done
-wait
+## a demo
+Rscript script/sv.r
 ```
 
