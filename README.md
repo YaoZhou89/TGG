@@ -24,7 +24,7 @@
 
 ## Citation
 
-Yao Zhou,#, Zhiyang Zhang,#, Zhigui Bao,#, Hongbo Li, Yaqing Lv, Yanjun Zan, Yaoyao Wu, Lin Cheng, Yuhan Fang, Kun Wu, Jinzhe Zhang, Hongjun lv, Tao Lin, Qiang Gao, Surya Saha, Shizhong Xu, Zhiwu Zhang, Zhangjun Fei, Lukas Mueller, Thomas Städler, Doug Speed, Sanwen Huang* Graph genome captures missing heritability and empowers tomato breeding (2021) pending
+
 
 ## Contacts
 
