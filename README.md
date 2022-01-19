@@ -28,7 +28,9 @@
 
 ## Contacts
 
-[1. Yao Zhou](https://github.com/YaoZhou89)
-[2. Zhiyang Zhang](https://github.com/zhangzhiyangcs)
-[3. Zhigui Bao](https://github.com/baozg)
+[Yao Zhou](https://github.com/YaoZhou89)
+
+[Zhiyang Zhang](https://github.com/zhangzhiyangcs)
+
+[Zhigui Bao](https://github.com/baozg)
 
