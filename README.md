@@ -16,6 +16,8 @@
 
 [Solomics - tomato](http://solomics.agis.org.cn/tomato/)
 
+[Sol Genomics Network - ftp](https://solgenomics.net/ftp/genomes/TGG/)
+
 
 
 ## Citation
