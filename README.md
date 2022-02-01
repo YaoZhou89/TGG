@@ -16,7 +16,11 @@
 
 [Solomics - tomato](http://solomics.agis.org.cn/tomato/) (The website was temporarily offline during Spring Festival)
 
+[Sol Genomics Network - project home](https://solgenomics.net/projects/tgg)
+
 [Sol Genomics Network - ftp](https://solgenomics.net/ftp/genomes/TGG/)
+
+
 
 
 
