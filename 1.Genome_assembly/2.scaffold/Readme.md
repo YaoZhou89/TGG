@@ -24,7 +24,7 @@ snakemake -s scaffold_Snakefile --stats snake.stats --latency-wait 120 -k -j 32
 
 ## Workflow
 
-![image-20220103183236565](/Users/zhiyangzhang/Library/Application Support/typora-user-images/image-20220103183236565.png)
+![image-20220103183236565](https://github.com/YaoZhou89/TGG/blob/main/figs/1_2genome_assembly_scaffold.png
 
 
 Figure1.  Pipeline of genome scaffold.

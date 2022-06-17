@@ -110,7 +110,7 @@ snakemake -s SV_Snakefile -j 2 --stats snakejob.stats >&2 2>>snakejob.log
 
 - workflow
 
-  ![image-20220102154738977](/Users/zhiyangzhang/Library/Application Support/typora-user-images/image-20220102154738977.png)
+  ![image-20220102154738977](https://github.com/YaoZhou89/TGG/blob/main/figs/SV_identification.png)
   Figure 1. The pipeline of SVs indentification.
 
 

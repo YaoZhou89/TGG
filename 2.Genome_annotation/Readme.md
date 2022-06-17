@@ -33,7 +33,7 @@ To configure this workflow, you can modify ``config/config.yaml`` according to n
 
 ## Workflow
 
-![image-20220101234140544](/Users/zhiyangzhang/Library/Application Support/typora-user-images/image-20220101234140544.png)
+![image-20220101234140544](https://github.com/YaoZhou89/TGG/blob/main/figs/genome_annotation.png)
 Figure 1. Overview of the genome annotation pipeline. 
 
 

@@ -14,7 +14,7 @@ The following software are applied:
 
 ## Workflow
 
-
+![1_2genome_assembly_scaffold](https://github.com/YaoZhou89/TGG/blob/main/figs/1_2genome_assembly_scaffold.png)
 
 Figure1.  Pipeline of genome assembly.
 
