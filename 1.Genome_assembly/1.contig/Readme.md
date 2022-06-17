@@ -14,7 +14,7 @@ The following software are applied:
 
 ## Workflow
 
-![image-20220103182607789](/Users/zhiyangzhang/Library/Application Support/typora-user-images/image-20220103182607789.png)
+
 
 Figure1.  Pipeline of genome assembly.
 
