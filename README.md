@@ -14,7 +14,7 @@
 
 ## Website
 
-[Solomics - tomato](http://solomics.agis.org.cn/tomato/) (The website was temporarily offline during Spring Festival)
+[Solomics - tomato](http://solomics.agis.org.cn/tomato/) 
 
 [Sol Genomics Network - project home](https://solgenomics.net/projects/tgg)
 
@@ -30,7 +30,7 @@
 
 ## Contacts
 
-[Yao Zhou](https://github.com/YaoZhou89)（zhouyao@caas.cn）
+[Yao Zhou](https://github.com/YaoZhou89)（zhouyao@ibcas.ac.cn）
 
 [Zhiyang Zhang](https://github.com/zhangzhiyangcs) (zhangzhiyangcs@163.com)
 
